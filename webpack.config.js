@@ -2,7 +2,7 @@ const path = require('path');
 module.exports = {
 
     //define entry point
-    entry: './src/script-1.js',
+    entry: './src/index.js',
 
     //defin output point
     output: {
