@@ -33,35 +33,40 @@ var TodoComponent =  createReactClass({
       return {
           todos: ['wash up', 'eat some cheese', 'take a nap'],
           list:'hello first time list',
-          count:0
+          count:0,
+          clickcount:0
       }
   }, //getInitialState
   //virtual dom changed so actual dom render only changed component
   handleClick: function() { //this method autobinds coz method autobinds without ES6 but in Es6 needs to bind
-     alert(this.state.list +' count click ' + this.state.count);
+    this.state.clickcount = this.state.clickcount +1;
+    alert(this.state.list +' count click ' + this.state.clickcount);
+
    },
   render: function(){
-    setTimeout(function(){  this.state.count = this.state.count +1;
-                            this.setState({
-                                  list:'wow its changed after 5 sec',
-                                  count: this.state.count
-                                });
-    }.bind(this),5000);
-      return(
-          <div id="todo-list">
-              <p>The busiest people have the most leisure...</p>
-              <ul>
-                  <li>{this.state.todos[0]}</li>
-                  <li>{this.state.todos[1]}</li>
-                  <li>{this.state.todos[2]}</li>
-              </ul>
-<h1>change state : {this.state.list} count is {this.state.count}</h1>
-<button onClick={this.handleClick}>
-        Say hello
-      </button>
-              <ListComponent pers ={person} todos={this.state.todos}/>
-          </div>
-      );
+
+    var countandlistafter5sec= setTimeout(function(){
+                                  this.state.count = this.state.count +1;
+                                  this.setState({
+                                    list:'wow its changed after 5 sec',
+                                    count: this.state.count
+                                  });
+                                }.bind(this),5000);
+    return(
+      <div id="todo-list">
+        <p>The busiest people have the most leisure...</p>
+        <ul>
+          <li>{this.state.todos[0]}</li>
+          <li>{this.state.todos[1]}</li>
+          <li>{this.state.todos[2]}</li>
+        </ul>
+        <h1>change state : {this.state.list} count is {this.state.count}</h1>
+        <button onClick={this.handleClick}>
+          Say hello
+        </button>
+        <ListComponent pers ={person} todos={this.state.todos}/>
+      </div>
+    );
   } //render
 });
 ReactDOM.render(<TodoComponent />, document.getElementById('todo-wrapper'));
