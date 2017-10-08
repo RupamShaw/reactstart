@@ -13,14 +13,17 @@ alert('hi'+med );
 //     }
 // });
 //Create a component  this is not ES6
-var TodoComponent =  createReactClass({
-    render: function(){
-        return(
-            <h1>Hellooooo without ES6 feature</h1>
-        );
-    }
-});
-ReactDOM.render(<TodoComponent />, document.getElementById('todo-wrapper'));
+// var TodoComponent =  createReactClass({
+//     render: function(){
+//         return(
+//           <div>
+//             <p>hello from para</p>
+//             <h1>Hellooooo without ES6 feature</h1>
+//           </div>
+//         );
+//     }
+// });
+//ReactDOM.render(<TodoComponent />, document.getElementById('todo-wrapper'));
 //ES6 feature is class
 // class TodoComponent  extends React.Component {
 //   render() {
@@ -31,3 +34,10 @@ ReactDOM.render(<TodoComponent />, document.getElementById('todo-wrapper'));
 //const is in Es6
 const element = <h1>Hello, world!</h1>;
 //ReactDOM.render(element, document.getElementById('todo-wrapper'));
+
+///Conceptually, components are like JavaScript functions. They accept arbitrary
+//inputs (called “props”) and return React elements describing what should appear on the screen.
+function TodoComponent(props) {
+ return <h1>Hello, {props.name}</h1>;
+}
+ ReactDOM.render(<TodoComponent name="from function" />, document.getElementById('todo-wrapper'));
