@@ -1,8 +1,8 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 var createReactClass = require('create-react-class');
-const med = "working fine";
-alert('hi'+med );
+// const med = "working fine";
+// alert('hi'+med );
 //============ newer version doesn't support without es6 feature of React.createclass
 //Create a component doesn't work
 // var TodoComponent = React.createClass({
@@ -31,10 +31,22 @@ function ListComponent(props) {
 var TodoComponent =  createReactClass({
   getInitialState: function(){
       return {
-          todos: ['wash up', 'eat some cheese', 'take a nap']
+          todos: ['wash up', 'eat some cheese', 'take a nap'],
+          list:'hello first time list',
+          count:0
       }
   }, //getInitialState
+  //virtual dom changed so actual dom render only changed component
+  handleClick: function() { //this method autobinds coz method autobinds without ES6 but in Es6 needs to bind
+     alert(this.state.list +' count click ' + this.state.count);
+   },
   render: function(){
+    setTimeout(function(){  this.state.count = this.state.count +1;
+                            this.setState({
+                                  list:'wow its changed after 5 sec',
+                                  count: this.state.count
+                                });
+    }.bind(this),5000);
       return(
           <div id="todo-list">
               <p>The busiest people have the most leisure...</p>
@@ -43,6 +55,10 @@ var TodoComponent =  createReactClass({
                   <li>{this.state.todos[1]}</li>
                   <li>{this.state.todos[2]}</li>
               </ul>
+<h1>change state : {this.state.list} count is {this.state.count}</h1>
+<button onClick={this.handleClick}>
+        Say hello
+      </button>
               <ListComponent pers ={person} todos={this.state.todos}/>
           </div>
       );
