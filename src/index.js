@@ -52,14 +52,14 @@ var TodoComponent =  createReactClass({
                                     count: this.state.count
                                   });
                                 }.bind(this),5000);
+    var todos = this.state.todos;
+    todos = todos.map(function(item,index){
+      return (<li> {item} </li>);
+    });
     return(
       <div id="todo-list">
         <p>The busiest people have the most leisure...</p>
-        <ul>
-          <li>{this.state.todos[0]}</li>
-          <li>{this.state.todos[1]}</li>
-          <li>{this.state.todos[2]}</li>
-        </ul>
+        <ul>{todos}</ul>
         <h1>change state : {this.state.list} count is {this.state.count}</h1>
         <button onClick={this.handleClick}>
           Say hello
