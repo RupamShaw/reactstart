@@ -1,7 +1,14 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 var createReactClass = require('create-react-class');
-var PropTypes = require('prop-types');
+
+//module requires
+var TodoItem = require('./todoItem')
+var AddItem = require('./addItem');
+
+//CSS requires
+require('./css/index.css');
+
 var TodoComponent =  createReactClass({
   getInitialState: function(){
       return {
@@ -17,6 +24,7 @@ var TodoComponent =  createReactClass({
       <div id="todo-list">
         <p>The busiest people have the most leisure...</p>
         <ul>{todos}</ul>
+
       </div>
     );
   } ,//render
@@ -31,26 +39,5 @@ var TodoComponent =  createReactClass({
    }
 });
 
-//Create TodoItem component
-var TodoItem = createReactClass({
-    render: function(){
-        return(
-            <li>
-                <div className="todo-item">
-                    <span className="item-name">{this.props.item}</span>
-                      <span className="item-remove" onClick={this.handleDelete}> x </span>
-                </div>
-            </li>
-        );
-    },
 
-    //Custom functions
-    handleDelete: function(){
-        this.props.onDelete(this.props.item);
-    }
-});
-
-TodoItem.propTypes = {
-  item: PropTypes.string
-};
 ReactDOM.render(<TodoComponent />, document.getElementById('todo-wrapper'));
