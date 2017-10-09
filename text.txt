@@ -1,6 +1,14 @@
 https://www.youtube.com/watch?v=GIU8ekYndKw&index=7&list=PL55RiY5tL51oyA8euSROLjMFZbXaV7skS
 https://reactjs.org/docs/typechecking-with-proptypes.html#proptypes
-proptypes let us know what is the type of property which is passed to component
+--proptypes let us know what is the type of property which is passed to component
+--we can do this.props.children too time 13.34
+<Home> this is children <Home>
+  Home.propTypes = {
+    name: PropTypes.string
+    children: PropTypes.element.Required
+}
+
+
 
 For those using latest React version: use prop-types instead of React.PropTypes.#dataType#
 
