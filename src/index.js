@@ -4,6 +4,7 @@ var createReactClass = require('create-react-class');
 
 //module requires
 var TodoItem = require('./todoItem')
+
 var AddItem = require('./addItem');
 
 //CSS requires
@@ -24,7 +25,7 @@ var TodoComponent =  createReactClass({
       <div id="todo-list">
         <p>The busiest people have the most leisure...</p>
         <ul>{todos}</ul>
-
+<AddItem onAdd={this.onAdd} />
       </div>
     );
   } ,//render
@@ -36,7 +37,15 @@ var TodoComponent =  createReactClass({
        this.setState({
          todos: updatedTodos
        });
-   }
+   },
+
+    onAdd: function(item){
+        var updatedTodos = this.state.todos;
+        updatedTodos.push(item);
+        this.setState({
+            todos: updatedTodos
+        })
+    }
 });
 
 
