@@ -1,7 +1,7 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 var createReactClass = require('create-react-class');
-
+var PropTypes = require('prop-types');
 var TodoComponent =  createReactClass({
   getInitialState: function(){
       return {
@@ -49,4 +49,8 @@ var TodoItem = createReactClass({
         this.props.onDelete(this.props.item);
     }
 });
+
+TodoItem.propTypes = {
+  item: PropTypes.string
+};
 ReactDOM.render(<TodoComponent />, document.getElementById('todo-wrapper'));
