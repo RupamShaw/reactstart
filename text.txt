@@ -1,5 +1,5 @@
 https://www.youtube.com/watch?v=GIU8ekYndKw&index=7&list=PL55RiY5tL51oyA8euSROLjMFZbXaV7skS
-
+https://reactjs.org/docs/typechecking-with-proptypes.html#proptypes
 proptypes let us know what is the type of property which is passed to component
 
 For those using latest React version: use prop-types instead of React.PropTypes.#dataType#
