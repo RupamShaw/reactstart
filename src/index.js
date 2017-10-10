@@ -1,52 +1,41 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 var createReactClass = require('create-react-class');
+https://www.ctheu.com/2015/02/12/how-to-communicate-between-react-components/
 
-//module requires
-var TodoItem = require('./todoItem')
-
-var AddItem = require('./addItem');
-
-//CSS requires
-require('./css/index.css');
-
-var TodoComponent =  createReactClass({
-  getInitialState: function(){
-      return {
-          todos: ['wash up', 'eat some cheese', 'take a nap'],
-      }
-  }, //getInitialState
-  render: function(){
-    var todos = this.state.todos;
-    todos = todos.map((item, index) =>{
-      return (<TodoItem key={index} item={item} onDelete={this.onDelete} />);
-    });
-    return(
-      <div id="todo-list">
-        <p>The busiest people have the most leisure...</p>
-        <ul>{todos}</ul>
-<AddItem onAdd={this.onAdd} />
-      </div>
-    );
-  } ,//render
-  //Custom functions
-   onDelete: function(item){
-       var updatedTodos = this.state.todos.filter(function(val, index){
-           return item !== val;
-       });
-       this.setState({
-         todos: updatedTodos
-       });
-   },
-
-    onAdd: function(item){
-        var updatedTodos = this.state.todos;
-        updatedTodos.push(item);
-        this.setState({
-            todos: updatedTodos
-        })
+// the parent
+var MyContainer = createReactClass({
+    getInitialState: function() {
+        return { checked: false };
+    },
+    onChildChanged: function(newState) {
+        this.setState({ checked: newState });
+    },
+    render: function() {
+        return  <div>
+                  <div>Are you checked ? {this.state.checked ? 'yes' : 'no'}</div>
+                  <ToggleButton text="Toggle me"
+                                initialChecked={this.state.checked}
+                                callbackParent={this.onChildChanged} />
+                </div>;
     }
 });
 
-
-ReactDOM.render(<TodoComponent />, document.getElementById('todo-wrapper'));
+// the child
+var ToggleButton = createReactClass({
+  getInitialState: function() {
+    // we set our initial state from our props
+    return { checked: this.props.initialChecked };
+  },
+  onTextChanged: function() {
+    var newState = !this.state.checked;
+    this.setState({ checked: newState }); // we update our state
+    this.props.callbackParent(newState); // we notify our parent
+  },
+  render: function() {
+    return <label>{this.props.text}: <input type="checkbox"
+                                            checked={this.state.checked}
+                                            onChange={this.onTextChanged}/></label>;
+  }
+});
+ReactDOM.render(<MyContainer />, document.getElementById('todo-wrapper'))
