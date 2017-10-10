@@ -1,54 +1,67 @@
-var React = require('react');
-var ReactDOM = require('react-dom');
-var createReactClass = require('create-react-class');
-//https://www.ctheu.com/2015/02/12/how-to-communicate-between-react-components/
+import React from "react";
+import {render} from "react-dom";
 
-// the parent
-var MyContainer = createReactClass({
-    getInitialState: function() {
-        //return { checked: false };
-        return { checked: false, totalChecked: 0 };
+import {Header} from "./components/header";
+import {Home} from "./components/home";
 
-//return { default: false, totalChecked: 0 };
-    },
-    // onChildChanged: function(newState) {
-    //     this.setState({ checked: newState });
-    // },
-    onChildChanged: function(newState) {
-     // if newState is true, it means a checkbox has been checked otherwise unchecked
-     var newTotal = this.state.totalChecked + (newState ? 1 : -1);
-     this.setState({ checked: newState });
-     this.setState({ totalChecked: newTotal });
-   },
-    render: function() {
-        return  <div><div >total checked {this.state.totalChecked}</div>
-                  <div>Are you checked ? {this.state.checked ? 'yes' : 'no'}</div>
-                  <ToggleButton text="Toggle me"
-                                initialChecked={this.state.checked}
-                                callbackParent={this.onChildChanged} />
-                                <ToggleButton text="Toggle me too" initialChecked={this.state.checked}
-                                                    callbackParent={this.onChildChanged} />
-                 <ToggleButton text="And me" initialChecked={this.state.checked}
-                                             callbackParent={this.onChildChanged} />
-                </div>;
+class App extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            homeLink: "Home",
+            homeMounted: true
+        };
     }
-});
 
-// the child
-var ToggleButton = createReactClass({
-  getInitialState: function() {
-    // we set our initial state from our props
-    return { checked: this.props.initialChecked };
-  },
-  onTextChanged: function() {
-    var newState = !this.state.checked;
-    this.setState({ checked: newState }); // we update our state
-    this.props.callbackParent(newState); // we notify our parent
-  },
-  render: function() {
-    return <label>{this.props.text}: <input type="checkbox"
-                                            checked={this.state.checked}
-                                            onChange={this.onTextChanged}/></label>;
-  }
-});
-ReactDOM.render(<MyContainer />, document.getElementById('todo-wrapper'))
+    onGreet() {
+        alert("Hello!");
+    }
+
+    onChangeLinkName(newName) {
+        this.setState({
+            homeLink: newName
+        });
+    }
+
+    onChangeHomeMounted() {
+        this.setState({
+            homeMounted: !this.state.homeMounted
+        });
+    }
+
+    render() {
+        let homeCmp = "";
+        if (this.state.homeMounted) {
+            homeCmp = (
+                <Home
+                    name={"Max"}
+                    initialAge={27}
+                    greet={this.onGreet}
+                    changeLink={this.onChangeLinkName.bind(this)}
+                    initialLinkName={this.state.homeLink}
+                />
+            );
+        }
+        return (
+            <div className="container">
+                <div className="row">
+                    <div className="col-xs-10 col-xs-offset-1">
+                        <Header homeLink={this.state.homeLink}/>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-xs-10 col-xs-offset-1">
+                        {homeCmp}
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-xs-10 col-xs-offset-1">
+                        <button onClick={this.onChangeHomeMounted.bind(this)} className="btn btn-primary">(Un)Mount Home Component</button>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+}
+
+render(<App/>, window.document.getElementById("app"));
