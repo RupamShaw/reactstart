@@ -1,0 +1,22 @@
+https://codesandbox.io/s/vVoQVk78?from-embed
+https://www.youtube.com/watch?v=W6m2qUCYLuk&index=15&list=PL4cUxeGkcC9i0_2FF-WhtRIfIJ1lXlTZR
+react4 have BrowserRouter instead of Router
+
+<BrowserRouter >
+<main>
+    <Route exact path={"/"} component={TodoComponent}></Route>
+    <Route  path={"/about"} component={About}></Route>
+</main >
+</BrowserRouter>
+
+
+var About = createReactClass({
+    render: function(){
+        return(
+          <div>
+          <Link to='/'>Home</Link>
+           <h2>All about me</h2>
+          </div>
+        );
+    }
+});
