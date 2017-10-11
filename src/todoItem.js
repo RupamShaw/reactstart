@@ -11,7 +11,7 @@ var TodoItem = createReactClass({
             <li>
                 <div className="todo-item">
                     <span className="item-name">{this.props.item}</span>
-                      <span className="item-remove" onClick={this.handleDelete}> x </span>
+                    <span className="item-remove" onClick={this.handleDelete}> x </span>
                 </div>
             </li>
         );

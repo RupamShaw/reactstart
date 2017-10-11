@@ -4,7 +4,9 @@ var createReactClass = require('create-react-class');
 require('./css/addItem.css');
 
 var AddItem = createReactClass({
+
     render: function(){
+  
         return(
             <form id="add-todo" onSubmit={this.handleSubmit}>
                 <input type="text" required ref="newItem"/>

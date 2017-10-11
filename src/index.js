@@ -1,22 +1,28 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 var createReactClass = require('create-react-class');
-import { Switch, Route } from 'react-router-dom'
-import { BrowserRouter } from 'react-router-dom'
-import { Link } from 'react-router-dom'
+import {  Route,Link,BrowserRouter } from 'react-router-dom'
 //module requires
 var TodoItem = require('./todoItem')
 
 var AddItem = require('./addItem');
 
 var About = require('./about');
+//var User = require('./user')
+import { User } from './user'
+
 
 //CSS requires
 require('./css/index.css');
+
+
 const Header = () => (
   <header>
+
       <ul>
         <li><Link to='/about'>About</Link></li>
+        <li><Link to='/user/10'>User</Link></li>
+
     </ul>
   </header>
 )
@@ -33,7 +39,8 @@ var TodoComponent =  createReactClass({
     });
     return(
       <div id="todo-list">
-        <Link to='/about'>About</Link>
+        <Header/>
+
         <p>The busiest people have the most leisure...</p>
         <ul>{todos}</ul>
         <AddItem onAdd={this.onAdd} />
@@ -46,14 +53,16 @@ var TodoComponent =  createReactClass({
                               function(val, index){
                                 return item !== val;
                               });
+
        this.setState({
+
                       todos: updatedTodos
                     });
    },
 
     onAdd: function(item){
         var updatedTodos = this.state.todos;
-        updatedTodos.push(item);
+        updatedTodos.unshift(item);
         this.setState({
             todos: updatedTodos
         })
@@ -68,11 +77,10 @@ var App = createReactClass({
             <main>
                 <Route exact path={"/"} component={TodoComponent}></Route>
                 <Route  path={"/about"} component={About}></Route>
+                <Route  path={"/user/:id"} component={User}></Route>
             </main >
             </BrowserRouter>
         );
     }
 });
-
-
 ReactDOM.render(<App />, document.getElementById('todo-wrapper'));
