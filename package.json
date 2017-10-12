@@ -27,6 +27,7 @@
     "babel-preset-stage-2": "^6.24.1",
     "create-react-class": "^15.6.2",
     "css-loader": "^0.28.7",
+    "firebase": "^4.5.0",
     "history": "^4.7.2",
     "jquery": "^3.2.1",
     "prop-types": "^15.6.0",

@@ -1,22 +1,12 @@
-https://codesandbox.io/s/vVoQVk78?from-embed
-https://www.youtube.com/watch?v=W6m2qUCYLuk&index=15&list=PL4cUxeGkcC9i0_2FF-WhtRIfIJ1lXlTZR
-react4 have BrowserRouter instead of Router
+https://www.youtube.com/watch?v=-RtJroTMDf4 React with Firebase Notes / To-Do App Tutorial
+https://github.com/wesdoyle/react-firebase-notes-app
+create project in firebase coppyin  config/config.js
+https://console.firebase.google.com/u/0/project/react-todo-6f169/overview
+https://firebase.google.com/docs/web/setup?authuser=0
+npm install firebase --save
+To use the module in your application, require it from any JavaScript file:
 
-<BrowserRouter >
-<main>
-    <Route exact path={"/"} component={TodoComponent}></Route>
-    <Route  path={"/about"} component={About}></Route>
-</main >
-</BrowserRouter>
+var firebase = require("firebase");
+If you are using ES2015, you can import the module instead:
 
-
-var About = createReactClass({
-    render: function(){
-        return(
-          <div>
-          <Link to='/'>Home</Link>
-           <h2>All about me</h2>
-          </div>
-        );
-    }
-});
+import * as firebase from "firebase";

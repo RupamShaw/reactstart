@@ -1,62 +1,61 @@
 import React from "react";
 import { Link } from 'react-router-dom'
-import {withRouter} from "react-router-dom";﻿
 var createReactClass = require('create-react-class');
-//import { browserHistory } from "react-router";
-import { createBrowserHistory } from 'history'
+import {databaseuser} from "./config/config";
+
 export class User extends React.Component {
-//var users = [];
-constructor(prop){
+
+  constructor(prop){
   super(prop);
   this.state ={users: [],counter: 0}
-  this.handleSubmit = this.handleSubmit.bind(this);
+  this.addUserHandle = this.addUserHandle.bind(this);
 }
-onNavigateHome() {
-   this.props.history.push("/");
+
+componentWillMount(){
+    const previousUsers = this.state.users;
+
+    // DataSnapshot
+    databaseuser.on('child_added', snap => {
+      previousUsers.unshift({
+        id: snap.key,
+        name: snap.val().name,
+        dob: snap.val().dob
+      })
+
+      this.setState({
+        users: previousUsers
+      })
+    })
+
   }
+
   //Custom functions
-  handleSubmit(e){
+  addUserHandle(e){
     e.preventDefault();//form default behaviour to submit and refresh
-    console.log("handle refs");
-    console.log(this.refs);
     let name = this.refs.newUser.value
     let dob = this.refs.dob.value
-    let counter = this.state.counter
-    counter += 1
-    // onAdd(this.refs.newUser.value);
-
-    let user = {name, dob, counter}
-    let users = this.state.users
-    users.unshift(user);
-    this.setState({
-      users: users,
-      counter: counter
-    })
-    console.log('username'+this.state.users[0].name)
+    databaseuser.push().set({ name: name,dob:dob});
     this.refs.addUser.reset()//each submit clear text boxes
   }
-
+ 
 
   render() {
     let users = this.state.users
-    console.log('render');
-    console.log(users);
     return (
             <div >
               <Header />
               <h3>The User Page</h3>
               <p>User ID: {this.props.match.params.id}</p>
-              <form ref="addUser" id="add-user" onSubmit={this.handleSubmit}>
+              <form ref="addUser" id="add-user" onSubmit={this.addUserHandle}>
                   <input type="text" required ref="newUser" placeholder="user Name"/>
                   <input type="text" required ref="dob" placeholder="Date Of Birth"/>
-                  <input type="submit" value="Submit User" />
-                  <button onClick={this.onNavigateHome} className="btn btn-primary">Go Home!</button>
+                  <input className="btn btn-primary" type="submit" value="Submit User" />
+                
               </form>
-              <pre>{JSON.stringify(users)}
-              </pre>
+            {/*   <pre>{JSON.stringify(users)}</pre> */}
               <ul>
                 {
-                  users.map((user => <li key={user.counter}>
+                  users.map((user => <li key={user.id}>
                                     {user.name} - {user.dob}
                                   </li>
                           ))
@@ -75,16 +74,4 @@ onNavigateHome() {
     </header>
   )
 
-// var User = createReactClass({
-//     render: function(){
-//         return(
-//           <div>
-//             <Header />
-//             <h3>The User Page</h3>
-//             <p>User ID: </p>
-//           </div>
-//         );
-//     }
-// });
-//
-// module.exports = User;
+

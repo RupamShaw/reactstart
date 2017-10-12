@@ -2,39 +2,60 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var createReactClass = require('create-react-class');
 import {  Route,Link,BrowserRouter } from 'react-router-dom'
+
 //module requires
+import { databaseTodos } from './config/config'
 var TodoItem = require('./todoItem')
-
 var AddItem = require('./addItem');
-
 var About = require('./about');
-//var User = require('./user')
 import { User } from './user'
-
 
 //CSS requires
 require('./css/index.css');
 
-
 const Header = () => (
   <header>
-
       <ul>
         <li><Link to='/about'>About</Link></li>
         <li><Link to='/user/10'>User</Link></li>
-
-    </ul>
+      </ul>
   </header>
 )
+
 var TodoComponent =  createReactClass({
+  componentWillMount :function(){
+      const previoustodos = this.state.todos;
+      // DataSnapshot
+      databaseTodos.on('child_added', snap => {
+        previoustodos.unshift(
+           snap.val().item
+        )
+        this.setState({
+          todos: previoustodos
+        })
+      })
+
+      databaseTodos.on('child_removed', snap => {
+        for(var i=0; i < previoustodos.length; i++){
+          if(previoustodos[i] === snap.val().item){
+            previoustodos.splice(i, 1);
+          }
+        }
+        this.setState({
+          todos: previoustodos
+        })
+      })
+    },
+
   getInitialState: function(){
       return {
-          todos: ['wash up', 'eat some cheese', 'take a nap'],
+          todos: [],
       }
   }, //getInitialState
+
   render: function(){
     var todos = this.state.todos;
-    todos = todos.map((item, index) =>{
+     todos = todos.map((item, index) =>{
       return (<TodoItem key={index} item={item} onDelete={this.onDelete} />);
     });
     return(
@@ -47,25 +68,20 @@ var TodoComponent =  createReactClass({
       </div>
     );
   } ,//render
+
   //Custom functions
    onDelete: function(item){
-       var updatedTodos = this.state.todos.filter(
-                              function(val, index){
-                                return item !== val;
-                              });
-
-       this.setState({
-
-                      todos: updatedTodos
-                    });
+    databaseTodos.orderByChild('item').equalTo(item)
+        .once('value').then(function(snapshot) {
+            snapshot.forEach(function(childSnapshot) {
+            //remove each child
+            databaseTodos.child(childSnapshot.key).remove();
+        });
+    });
    },
 
     onAdd: function(item){
-        var updatedTodos = this.state.todos;
-        updatedTodos.unshift(item);
-        this.setState({
-            todos: updatedTodos
-        })
+      databaseTodos.push().set({ item: item});
     }
 });
 
